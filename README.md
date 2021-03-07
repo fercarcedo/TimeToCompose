@@ -7,7 +7,7 @@
 Countdown timer which displays the time by filling up the bottom with green, inspired by [this Dribbble](https://dribbble.com/shots/3573310-Daily-UI-014-Countdown-Timer)
 
 ## :bulb: Motivation and Context
-With this project, I learned about visibility animations, state integration using ViewModel and custom drawing on Canvas 
+With this project, I learned about visibility animations, state integration using ViewModel and custom drawing on Canvas, as well as changing the layout based on the current orientation (the app changes from Column to Row on landscape) 
 
 
 ## :camera_flash: Screenshots
