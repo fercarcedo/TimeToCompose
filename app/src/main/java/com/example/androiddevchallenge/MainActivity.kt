@@ -27,7 +27,9 @@ import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -52,6 +54,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -80,9 +83,11 @@ fun TimeToCompose(viewModel: CountdownViewModel = viewModel()) {
     val timeInMillis by viewModel.millis.observeAsState(initial = 0)
     val totalTimeInMillis by viewModel.totalMillis.observeAsState(initial = 0)
     val secondaryColor = MaterialTheme.colors.secondary
+    val orientation = LocalConfiguration.current.orientation
     Surface(color = MaterialTheme.colors.background) {
-        Column(
-            Modifier
+        Container(
+            orientation = orientation,
+            modifier = Modifier
                 .fillMaxWidth()
                 .fillMaxHeight()
                 .drawBehind {
@@ -92,37 +97,77 @@ fun TimeToCompose(viewModel: CountdownViewModel = viewModel()) {
                         drawRect(
                             secondaryColor,
                             topLeft = offset,
-                            size = Size(size.width - offset.x, (size.height * percent) - offset.y)
+                            size = Size(
+                                size.width - offset.x,
+                                (size.height * percent) - offset.y
+                            )
                         )
                     }
+                },
+            rowContent = {
+                Box(
+                    Modifier
+                        .weight(1f)
+                        .fillMaxHeight(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    CountdownTime(running, timeInMillis, viewModel)
                 }
-        ) {
-            Box(
-                Modifier
-                    .weight(1f)
-                    .fillMaxWidth(),
-                contentAlignment = Alignment.Center
-            ) {
-                CountdownTime(running, timeInMillis, viewModel)
+                Box(
+                    Modifier
+                        .weight(1f)
+                        .fillMaxWidth()
+                        .fillMaxHeight(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Controls(
+                        running,
+                        onClickStartPause = {
+                            viewModel.toggleRunning()
+                        },
+                        onClickCancel = {
+                            viewModel.cancel()
+                        }
+                    )
+                }
+            },
+            columnContent = {
+                Box(
+                    Modifier
+                        .weight(1f)
+                        .fillMaxWidth(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    CountdownTime(running, timeInMillis, viewModel)
+                }
+                Box(
+                    Modifier
+                        .weight(1f)
+                        .fillMaxWidth()
+                        .fillMaxHeight(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Controls(
+                        running,
+                        onClickStartPause = {
+                            viewModel.toggleRunning()
+                        },
+                        onClickCancel = {
+                            viewModel.cancel()
+                        }
+                    )
+                }
             }
-            Box(
-                Modifier
-                    .weight(1f)
-                    .fillMaxWidth()
-                    .fillMaxHeight(),
-                contentAlignment = Alignment.Center
-            ) {
-                Controls(
-                    running,
-                    onClickStartPause = {
-                        viewModel.toggleRunning()
-                    },
-                    onClickCancel = {
-                        viewModel.cancel()
-                    }
-                )
-            }
-        }
+        )
+    }
+}
+
+@Composable
+fun Container(orientation: Int, modifier: Modifier, rowContent: @Composable RowScope.() -> Unit, columnContent: @Composable ColumnScope.() -> Unit) {
+    if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+        Column(modifier, content = columnContent)
+    } else {
+        Row(modifier, content = rowContent)
     }
 }
 
