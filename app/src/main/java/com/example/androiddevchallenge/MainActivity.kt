@@ -145,7 +145,9 @@ fun CountdownTime(running: Boolean, timeInMillis: Long, viewModel: CountdownView
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun Controls(running: Boolean, onClickStartPause: () -> Unit, onClickCancel: () -> Unit) {
-    Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.SpaceAround, modifier = Modifier.fillMaxWidth().fillMaxHeight()) {
+    Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center, modifier = Modifier
+        .fillMaxWidth()
+        .fillMaxHeight()) {
         IconButton(onClick = onClickStartPause, modifier = Modifier
             .width(150.dp)
             .height(150.dp)) {
@@ -159,13 +161,20 @@ fun Controls(running: Boolean, onClickStartPause: () -> Unit, onClickCancel: () 
             )
         }
         AnimatedVisibility(visible = running) {
-            TextButton(onClick = onClickCancel) {
-                Text(
-                    stringResource(R.string.cancel),
-                    color = MaterialTheme.colors.onSurface,
-                    style = MaterialTheme.typography.button.copy(fontSize = 20.sp),
-                    fontWeight = FontWeight.Bold
-                )
+            Box(
+                Modifier
+                    .fillMaxWidth()
+                    .fillMaxHeight(),
+                contentAlignment = Alignment.Center
+            ) {
+                TextButton(onClick = onClickCancel) {
+                    Text(
+                        stringResource(R.string.cancel),
+                        color = MaterialTheme.colors.onSurface,
+                        style = MaterialTheme.typography.button.copy(fontSize = 20.sp),
+                        fontWeight = FontWeight.Bold
+                    )
+                }
             }
         }
     }
