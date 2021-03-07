@@ -22,22 +22,22 @@ import android.view.View
 import android.view.Window
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.width
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
-import androidx.compose.material.IconButton
-import androidx.compose.material.Icon
 import androidx.compose.material.TextButton
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
@@ -112,11 +112,15 @@ fun TimeToCompose(viewModel: CountdownViewModel = viewModel()) {
                     .fillMaxHeight(),
                 contentAlignment = Alignment.Center
             ) {
-                Controls(running, onClickStartPause = {
-                    viewModel.toggleRunning()
-                }, onClickCancel = {
-                    viewModel.cancel()
-                })
+                Controls(
+                    running,
+                    onClickStartPause = {
+                        viewModel.toggleRunning()
+                    },
+                    onClickCancel = {
+                        viewModel.cancel()
+                    }
+                )
             }
         }
     }
@@ -144,12 +148,18 @@ fun CountdownTime(running: Boolean, timeInMillis: Long, viewModel: CountdownView
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun Controls(running: Boolean, onClickStartPause: () -> Unit, onClickCancel: () -> Unit) {
-    Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center, modifier = Modifier
-        .fillMaxWidth()
-        .fillMaxHeight()) {
-        IconButton(onClick = onClickStartPause, modifier = Modifier
-            .width(150.dp)
-            .height(150.dp)) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center,
+        modifier = Modifier
+            .fillMaxWidth()
+            .fillMaxHeight()
+    ) {
+        IconButton(
+            onClick = onClickStartPause,
+            modifier = Modifier
+                .width(150.dp)
+                .height(150.dp)
+        ) {
             Icon(
                 imageVector = if (running) Icons.Outlined.PauseCircleOutline else Icons.Outlined.PlayCircleOutline,
                 contentDescription = null,
@@ -181,9 +191,12 @@ fun Controls(running: Boolean, onClickStartPause: () -> Unit, onClickCancel: () 
 
 @Composable
 fun TimeArrow(up: Boolean, onClick: () -> Unit) {
-    IconButton(onClick = onClick, modifier = Modifier
-        .width(75.dp)
-        .height(75.dp)) {
+    IconButton(
+        onClick = onClick,
+        modifier = Modifier
+            .width(75.dp)
+            .height(75.dp)
+    ) {
         Icon(
             imageVector = if (up) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown,
             contentDescription = null,
