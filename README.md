@@ -1,4 +1,4 @@
-# Put title of your app here
+# Time To Compose
 
 ![Workflow result](https://github.com/fercarcedo/TimeToCompose/workflows/Check/badge.svg)
 
